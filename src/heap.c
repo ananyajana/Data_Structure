@@ -19,7 +19,8 @@ Heap-maximum - O(log n)
 #define	RIGHT(i)	(2*i + 2)
 
 void max_heapify(int a[], int i);
-void build_max_heap(int a[]);	
+void build_max_heap(int a[]);
+void heap_sort(int a[]);
 
 //heap size
 int size;
@@ -45,9 +46,15 @@ int main()
 		printf("%d ", arr[i]);
 	}
 	
-	//build max heap with the user input elements
-	build_max_heap(arr);	
+	//perform heap sort on the array
+	heap_sort(arr);
 	
+	//printing the sorted aray
+	for(i = 0; i < size; ++i){
+		printf("%d ", arr[i]);
+	}
+	
+	//free the dynamic array
 	free(arr);
 }
 
@@ -63,7 +70,9 @@ void max_heapify(int a[], int i)
 	int l, r, largest, temp;
 	l = LEFT(i);
 	r = RIGHT(i);
-	
+
+	//printf("%d %d\n", a, i);	
+		
 	if((l < size) && (a[l] > a[i]))
 		largest = l;
 	else
@@ -77,4 +86,24 @@ void max_heapify(int a[], int i)
 	}
 	
 	max_heapify(a, largest);
+}
+
+void heap_sort(int a[])
+{
+	int i, temp;
+	
+	build_max_heap(a);
+	
+	//place the biggest element which is at the root, at the end of the array
+	for(i = size - 1; i >= 1; --i){
+		temp = a[0];
+		a[0] = a[i];
+		a[i] = temp;
+	}
+	
+	//reduce the size of the heap as we removed the largest element
+	--size;
+	
+	//create a heap out of the remaining elements in the heap
+	max_heapify(a, 0);
 }
