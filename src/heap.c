@@ -9,7 +9,6 @@ Heap-increase-key
 Heap-maximum - O(log n)
 */
 
-// creating a rudimentary heap(
  
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,20 +21,21 @@ void max_heapify(int a[], int i);
 void build_max_heap(int a[]);
 void heap_sort(int a[]);
 
-//heap size
-int size;
+//heap sz
+int size, sz;
 
 int main()
 {
 	int i;
 	int *arr = NULL;
 	
-	//take user input: size of the array
+	//take user input: sz of the array
 	printf("Enter the heap size: ");
-	scanf("%d", &size);
+	scanf("%d", &sz);
+	size = sz;
 	
 	//create a dynamic array of size n
-	arr = (int*)malloc(size*sizeof(int));
+	arr = (int*)malloc(sz*sizeof(int));
 	
 	//take input the individual elements
 	printf("Enter the heap elements:\n");
@@ -61,8 +61,10 @@ int main()
 void build_max_heap(int a[])
 {
 	int i;
-	for(i = (size - 1)/2; i >= 0; --i)
+	for(i = (sz - 1)/2; i >= 0; --i){
+		printf("i = %d\n", i);
 		max_heapify(a, i);
+	}	
 }
 
 void max_heapify(int a[], int i)
@@ -71,21 +73,25 @@ void max_heapify(int a[], int i)
 	l = LEFT(i);
 	r = RIGHT(i);
 
-	//printf("%d %d\n", a, i);	
+	printf("%d %d\n", a[i], i);	
 		
-	if((l < size) && (a[l] > a[i]))
+	if((l < sz) && (a[l] > a[i]))
 		largest = l;
 	else
 		largest = i;
-	if((r < size) && ( a[r] > a[largest]))
+	if((r < sz) && ( a[r] > a[largest]))
 		largest = r;
 	if(largest != i){
 		temp = a[largest];
 		a[largest] = a[i];
 		a[i] = temp;
-	}
-	
-	max_heapify(a, largest);
+		printf("hi\n");
+		for(i = 0; i < size; ++i){
+			printf("%d ", a[i]);
+		}
+		printf("\n");
+		max_heapify(a, largest);
+	}	
 }
 
 void heap_sort(int a[])
@@ -93,17 +99,27 @@ void heap_sort(int a[])
 	int i, temp;
 	
 	build_max_heap(a);
+	printf("The heap is\n");
+	for(i = 0; i < size; ++i){
+		printf("%d ", a[i]);
+	}
+	printf("\n");
 	
 	//place the biggest element which is at the root, at the end of the array
-	for(i = size - 1; i >= 1; --i){
+	for(i = sz - 1; (i >= 1) && (sz > 1); --i){
 		temp = a[0];
 		a[0] = a[i];
 		a[i] = temp;
+
+		printf("hi1\n");
+		for(i = 0; i < size; ++i){
+			printf("%d ", a[i]);
+		}
+		printf("\n");
+		//reduce the size of the heap as we removed the largest element
+		--sz;
+	
+		//create a heap out of the remaining elements in the heap
+		max_heapify(a, 0);
 	}
-	
-	//reduce the size of the heap as we removed the largest element
-	--size;
-	
-	//create a heap out of the remaining elements in the heap
-	max_heapify(a, 0);
 }
