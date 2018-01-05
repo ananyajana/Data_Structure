@@ -7,6 +7,8 @@ Max-heap insert,
 Heap-extract max
 Heap-increase-key
 Heap-maximum - O(log n)
+Author: Ananya Jana
+(Cormen book)
 */
 
  
